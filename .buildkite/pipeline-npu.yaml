@@ -10,7 +10,6 @@ steps:
     command: |
       set -euo pipefail
       docker info || (echo "Docker not running" && exit 1)
-      docker pull quay.io/ascend/vime:vime-latest
       mkdir -p /mnt/hf-cache
       docker run --rm \
         --name "vime-test-${BUILDKITE_BUILD_NUMBER}" \
