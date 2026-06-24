@@ -10,31 +10,16 @@ steps:
         agents:
           queue: "linux-small"
         plugins:
-          - kubernetes:
-              podSpec:
-                containers:
-                  - image: "quay.io/ascend/vime:vime-latest"
-                    volumeMounts:
-                      - name: devshm
-                        mountPath: /dev/shm
-                      - name: hf-cache
-                        mountPath: /root/.cache/huggingface
-                    env:
-                      - name: HF_HOME
-                        value: /root/.cache/huggingface
-                      - name: VIME_TEST_ENABLE_INFINITE_RUN
-                        value: "false"
-                      # Expand additional pod_env variables here as needed, e.g.:
-                      # - name: VIME_TEST_USE_DEEPEP
-                      #   value: "0"
-                volumes:
-                  - name: devshm
-                    emptyDir:
-                      medium: Memory
-                  - name: hf-cache
-                    hostPath:
-                      path: /mnt/hf-cache
-                      type: DirectoryOrCreate
+          - docker#v5.0.0:
+              image: "quay.io/ascend/vime:vime-latest"
+              environment:
+                - HF_HOME=/root/.cache/huggingface
+                - VIME_TEST_ENABLE_INFINITE_RUN=false
+              # Expand additional environment variables here as needed, e.g.:
+              # - VIME_TEST_USE_DEEPEP=0
+              volumes:
+                - /dev/shm:/dev/shm
+                - /mnt/hf-cache:/root/.cache/huggingface
         timeout_in_minutes: 60
         # The npu test cases to be executed have not been determined yet.
         command: |
