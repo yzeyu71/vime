@@ -3,6 +3,9 @@
 # This pipeline is for running NPU tests on PRs . 
 steps:
   - label: "Run NPU test via Docker"
+    key: npu-tests
+    agents:
+      queue: "macos-medium"
     timeout_in_minutes: 60
     command: |
       set -euo pipefail
