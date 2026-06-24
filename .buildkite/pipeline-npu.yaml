@@ -5,11 +5,7 @@ steps:
   - label: "Run NPU test via Docker"
     key: npu-tests
     agents:
-<<<<<<< HEAD
       queue: "ascend-a3"
-=======
-      queue: "macos-medium"
->>>>>>> c20848eaf2d2170a11ac0b631852f4d69ae5d592
     timeout_in_minutes: 60
     command: |
       set -euo pipefail
