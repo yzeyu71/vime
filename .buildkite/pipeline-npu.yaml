@@ -3,23 +3,17 @@
 # This pipeline is for running NPU tests on PRs . 
 steps:
   - label: "Run NPU test via Docker"
+    key: npu-tests
+    agents:
+      queue: "ascend-a3"
     timeout_in_minutes: 60
     command: |
       set -euo pipefail
-
-      # 确保 Docker 可用
       docker info || (echo "Docker not running" && exit 1)
-
-      # 拉取镜像（若本地不存在）
       docker pull quay.io/ascend/vime:vime-latest
-
-      # 准备宿主机目录（如果使用 hostPath）
       mkdir -p /mnt/hf-cache
-
-      # 执行容器
       docker run --rm \
         --name "vime-test-${BUILDKITE_BUILD_NUMBER}" \
-        --device /dev/davinci0 \          # 若无需 NPU 可删除
         --device /dev/davinci_manager \
         --device /dev/devmm_svm \
         --device /dev/hisi_hdc \
